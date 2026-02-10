@@ -25,6 +25,15 @@ export const verifySignedData = (batchSignedData: InternalSignedData[]): Verific
     }
 
     if (signedData.airnode !== goRecoverSigner.data) {
+      // Log mismatch for debugging: recovered signer vs expected
+      // eslint-disable-next-line no-console
+      console.error('[signed-data-verifier] Signature mismatch', {
+        recovered: goRecoverSigner.data,
+        expected: signedData.airnode,
+        signature: signedData.signature,
+        templateId: signedData.templateId,
+        timestamp: signedData.timestamp,
+      });
       return { message: 'Signature is invalid', signedData };
     }
 
