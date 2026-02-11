@@ -1,11 +1,12 @@
-import { ethers } from 'ethers';
+import { type ethers } from 'ethers';
 
+import { createHsmSigner } from './hsm-signer';
 import type { Config } from './validation/schema';
 
 export interface State {
   config: Config;
   // We persist the derived Airnode wallet in memory as a performance optimization.
-  airnodeWallet: ethers.Wallet;
+  airnodeWallet: ethers.Signer;
   // The timestamp of when the service was initialized. This can be treated as a "deployment" timestamp.
   deploymentTimestamp: string;
   // Mapping for template ID to their OEV counterparts. The OEV template ID is hashed from the original template ID and
@@ -15,15 +16,15 @@ export interface State {
 
 let state: State;
 
-export const initializeState = (config: Config) => {
-  state = getInitialState(config);
+export const initializeState = async (config: Config) => {
+  state = await getInitialState(config);
   return state;
 };
 
-export const getInitialState = (config: Config): State => {
+export const getInitialState = async (config: Config): Promise<State> => {
   return {
     config,
-    airnodeWallet: ethers.Wallet.fromMnemonic(config.nodeSettings.airnodeWalletMnemonic),
+    airnodeWallet: await createHsmSigner('0x890ea8ec6d2c2e7f8a32650cb2b923a6afd8bf91'),
     deploymentTimestamp: Math.floor(Date.now() / 1000).toString(),
     templateIdToOevTemplateId: {},
   };

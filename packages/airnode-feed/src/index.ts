@@ -24,7 +24,7 @@ const setupUncaughtErrorHandler = () => {
 const startAirnodeFeed = async () => {
   const config = await loadConfig();
   if (!config) return;
-  initializeState(config);
+  await initializeState(config);
 
   void initiateSignedApiUpdateLoops();
   const env = loadEnv();

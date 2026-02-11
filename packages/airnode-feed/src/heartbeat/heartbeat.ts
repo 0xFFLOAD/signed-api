@@ -32,7 +32,7 @@ export const logHeartbeat = async () => {
   logger.debug('Creating heartbeat payload.');
   const currentTimestamp = Math.floor(Date.now() / 1000).toString();
   const unsignedHeartbeatPayload = {
-    airnode: airnodeWallet.address,
+    airnode: await airnodeWallet.getAddress(),
     stage,
     nodeVersion,
     currentTimestamp,

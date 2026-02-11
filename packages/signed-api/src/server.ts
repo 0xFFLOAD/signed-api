@@ -30,6 +30,26 @@ export const startServer = (config: Config, port: number) => {
     if (!goRequest.success) next(goRequest.error);
   });
 
+  app.get('/:airnodeAddress', async (req, res, next) => {
+    const goRequest = await go(() => {
+      logger.info('Received request "GET /:airnodeAddress".');
+      logger.debug('Request details.', { params: req.params });
+
+      const endpoint = config.endpoints.find((e) => e.urlPath === '/oev');
+      if (!endpoint) {
+        res.status(404).send('No oev endpoint');
+        return;
+      }
+
+      const result = getData(endpoint, req.headers.authorization, req.params.airnodeAddress);
+      res.status(result.statusCode).header(result.headers).send(result.body);
+
+      logger.debug('Responded to request "GET /:airnodeAddress".', result);
+    });
+
+    if (!goRequest.success) next(goRequest.error);
+  });
+
   app.get('/airnodes', async (_req, res, next) => {
     const goRequest = await go(async () => {
       logger.info('Received request "GET /airnodes".');

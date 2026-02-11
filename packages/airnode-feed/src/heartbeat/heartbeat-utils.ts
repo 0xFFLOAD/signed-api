@@ -18,7 +18,7 @@ export interface HeartbeatPayload {
 }
 
 export const signHeartbeat = async (
-  airnodeWallet: ethers.Wallet,
+  airnodeWallet: ethers.Signer,
   unsignedHeartbeatPayload: Omit<HeartbeatPayload, 'signature'>
 ) => {
   logger.debug('Signing heartbeat payload.');

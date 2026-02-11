@@ -6,7 +6,7 @@ export const deriveEndpointId = (oisTitle: string, endpointName: string) =>
   ethers.utils.keccak256(ethers.utils.defaultAbiCoder.encode(['string', 'string'], [oisTitle, endpointName]));
 
 export const signWithTemplateId = async (
-  wallet: ethers.Wallet,
+  wallet: ethers.Signer,
   templateId: string,
   timestamp: string,
   data: string

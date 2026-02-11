@@ -12,7 +12,7 @@ export const pushSignedData = async (batchPayload: SignedResponse[]) => {
     airnodeWallet,
   } = getState();
 
-  const airnode = airnodeWallet.address;
+  const airnode = await airnodeWallet.getAddress();
   if (isEmpty(batchPayload)) {
     logger.debug('No batch payload found to post. Skipping.');
     return null;
